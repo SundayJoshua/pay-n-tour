@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/pay-n-tour/static/css/main.f855e6bc.css",
+    "main.js": "/pay-n-tour/static/js/main.c826bf03.js",
+    "static/js/563.c45cd71d.chunk.js": "/pay-n-tour/static/js/563.c45cd71d.chunk.js",
+    "index.html": "/pay-n-tour/index.html",
+    "main.f855e6bc.css.map": "/pay-n-tour/static/css/main.f855e6bc.css.map",
+    "main.c826bf03.js.map": "/pay-n-tour/static/js/main.c826bf03.js.map",
+    "563.c45cd71d.chunk.js.map": "/pay-n-tour/static/js/563.c45cd71d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.c826bf03.js"
+  ]
+}
