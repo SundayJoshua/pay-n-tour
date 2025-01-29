@@ -2,7 +2,6 @@
   "name": "pay-n-tour",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://SundayJoshua.github.io/pay-n-tour",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -21,6 +20,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
+  "homepage": "https://SundayJoshua.github.io/pay-n-tour",
   "eslintConfig": {
     "extends": [
       "react-app",
