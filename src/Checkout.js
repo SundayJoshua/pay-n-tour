@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import CssBaseline from '@mui/material/CssBaseline';
+import React, { useState, useEffect } from "react";
 import { Container } from '@mui/material';
 
 
-
 function Checkout() {
-  const total = 2000;  // Set total dynamically (example)
+  const [checkoutData, setCheckoutData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);  // Initialize totalPrice state
 
   // Handle form submission (this can be updated as per your backend logic)
   const submitFormData = () => {
@@ -31,7 +32,7 @@ function Checkout() {
                 purchase_units: [
                   {
                     amount: {
-                      value: parseFloat(total).toFixed(2),
+                      value: parseFloat(totalPrice).toFixed(2), // Use dynamic totalPrice here
                     },
                   },
                 ],
@@ -50,15 +51,40 @@ function Checkout() {
     };
 
     loadPayPalScript();
-  }, [total]);  // Add total as dependency to re-run the effect if total changes
+  }, [totalPrice]);  // Add totalPrice as dependency to re-run the effect if totalPrice changes
+
+  // Fetch stored checkout data when the component is mounted
+  useEffect(() => {
+    const fetchCheckoutData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/cart/checkout');
+        if (!response.ok) {
+          throw new Error('Failed to fetch checkout data');
+        }
+        const data = await response.json();
+        setCheckoutData(data); // Store the fetched data
+        
+        // Set the totalPrice dynamically from the checkoutData
+        if (Object.keys(data).length > 0) {
+          const firstSessionId = Object.keys(data)[0]; // Get first sessionId
+          setTotalPrice(data[firstSessionId].totalPrice);  // Set totalPrice dynamically
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCheckoutData();
+  }, []);
 
   return (
-    
-    <Container maxWidth ="sm">
+    <Container maxWidth="sm">
       <div>
         <div className="col-lg-6">
           <div>
-              <h1>Complete your checkout experience</h1>
+            <h1>Complete your checkout experience</h1>
           </div>
 
           <br />
@@ -73,7 +99,22 @@ function Checkout() {
           <div className="box-element">
             <hr />
             <h3>Order Summary</h3>
-            
+            {/* Display checkout data if available */}
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            {checkoutData && Object.keys(checkoutData).length === 0 && (
+              <p>No checkout data found.</p>
+            )}
+            {checkoutData && Object.keys(checkoutData).length > 0 && (
+              <ul>
+                {Object.entries(checkoutData).map(([sessionId, { totalPrice }]) => (
+                  <li key={sessionId}>
+                    <strong>Session ID:</strong> {sessionId} <br />
+                    <strong>Total Price:</strong> ${totalPrice}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
